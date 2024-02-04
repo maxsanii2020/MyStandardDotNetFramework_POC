@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="job_id" />
+          </Key>
+          <Property Name="job_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="job_title" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="job_id" Type="int" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="school_id" />
+          </Key>
+          <Property Name="school_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="school_name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Person__job_id__2B3F6F97">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="job_id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="job_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetMostPopularJob" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetPersonsByJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="jobTitleParam" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetSchoolNames" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Person__job_id__2B3F6F97" Association="Self.FK__Person__job_id__2B3F6F97">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="job_id" />
+          </Key>
+          <Property Name="job_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="job_title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="People" Relationship="Self.FK__Person__job_id__2B3F6F97" FromRole="Job" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="job_id" Type="Int32" />
+          <NavigationProperty Name="Job" Relationship="Self.FK__Person__job_id__2B3F6F97" FromRole="Person" ToRole="Job" />
+        </EntityType>
+        <Association Name="FK__Person__job_id__2B3F6F97">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="job_id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="job_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MyDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Jobs" EntityType="Self.Job" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <AssociationSet Name="FK__Person__job_id__2B3F6F97" Association="Self.FK__Person__job_id__2B3F6F97">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <FunctionImport Name="GetMostPopularJob" ReturnType="Collection(Model.GetMostPopularJob_Result)" />
+          <FunctionImport Name="GetPersonsByJobTitle" ReturnType="Collection(Model.GetPersonsByJobTitle_Result)">
+          <Parameter Name="jobTitleParam" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Schools" EntityType="Model.School" />
+          <FunctionImport Name="GetSchoolNames" ReturnType="Collection(Model.GetSchoolNames_Result)" />
+        </EntityContainer>
+        <ComplexType Name="GetMostPopularJob_Result">
+          <Property Type="String" Name="job_title" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="jobCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetPersonsByJobTitle_Result">
+          <Property Type="Int32" Name="person_id" Nullable="false" />
+          <Property Type="String" Name="first_name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="last_name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="job_title" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="school_id" />
+          </Key>
+          <Property Name="school_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="school_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="GetSchoolNames_Result">
+          <Property Type="Int32" Name="school_id" Nullable="false" />
+          <Property Type="String" Name="school_name" Nullable="false" MaxLength="255" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="MyDatabaseEntities">
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="Model.Job">
+              <MappingFragment StoreEntitySet="Job">
+                <ScalarProperty Name="job_id" ColumnName="job_id" />
+                <ScalarProperty Name="job_title" ColumnName="job_title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="Model.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="job_id" ColumnName="job_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetMostPopularJob" FunctionName="Model.Store.GetMostPopularJob">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetMostPopularJob_Result">
+                <ScalarProperty Name="job_title" ColumnName="job_title" />
+                <ScalarProperty Name="jobCount" ColumnName="jobCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetPersonsByJobTitle" FunctionName="Model.Store.GetPersonsByJobTitle">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetPersonsByJobTitle_Result">
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="job_title" ColumnName="job_title" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="Model.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="school_name" ColumnName="school_name" />
+                <ScalarProperty Name="school_id" ColumnName="school_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetSchoolNames" FunctionName="Model.Store.GetSchoolNames">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetSchoolNames_Result">
+                <ScalarProperty Name="school_id" ColumnName="school_id" />
+                <ScalarProperty Name="school_name" ColumnName="school_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
