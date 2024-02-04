@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+// git-test: changed
+
 namespace MyStandardFramework_POC.Controllers
 {
 	public class HomeController : Controller
