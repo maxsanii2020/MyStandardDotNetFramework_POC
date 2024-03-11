@@ -7,8 +7,6 @@ using System.Web.Mvc;
 
 // add comment 1
 
-// add comment 2
-
 namespace MyStandardFramework_POC.Controllers
 {
 	public class HomeController : Controller

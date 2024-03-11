@@ -7,8 +7,6 @@ using System.Web.Routing;
 
 // Add comment 1 to routeConfig
 
-// Add comment 2 to routeConfig
-
 namespace MyStandardFramework_POC
 {
 	public class RouteConfig
