@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-// Add comment 1 to routeConfig // comment 3
+// comment 3
 
 namespace MyStandardFramework_POC
 {
