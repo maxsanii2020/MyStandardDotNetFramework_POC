@@ -5,7 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-// add comment 1
+// add comment 1 // comment 3
+
+// comment 3 - additional text
 
 namespace MyStandardFramework_POC.Controllers
 {
